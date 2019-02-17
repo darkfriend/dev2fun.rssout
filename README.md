@@ -48,13 +48,17 @@ _вызывается перед выводом RSS-ленты._
 ### Пример использования событий
 
 ```php
-\Bitrix\Main\EventManager::getInstance()->addEventHandler('dev2fun.rssout','OnBeforeOutputRss',function(&$arResult){
-	$arResult['NAME'] = 'Название для RSS';
-	if(empty($arResult['ITEMS'])) return;
-	foreach ($arResult['ITEMS'] as &$arItem) {
-		// ваш код
-	}
-	unset($arItem);
-});
+\Bitrix\Main\EventManager::getInstance()->addEventHandler(
+  'dev2fun.rssout',
+  'OnBeforeOutputRss',
+  function(&$arResult) {
+    $arResult['NAME'] = 'Название для RSS';
+    if(empty($arResult['ITEMS'])) return;
+    foreach ($arResult['ITEMS'] as &$arItem) {
+      // ваш код
+    }
+    unset($arItem);
+  }
+);
 ```
 
