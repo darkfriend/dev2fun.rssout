@@ -1,5 +1,5 @@
 <?
-$MESS ['CD_RO_NAME'] = "RSS новости (экспорт)";
-$MESS ['CD_RO_DESCRIPTION'] = "Экспорт новостей в формате RSS";
-$MESS ['CD_RO_RSS'] = "RSS";
+$MESS ['DEV2FUN_CD_RSS_NAME'] = "Гибкая RSS-лента";
+$MESS ['CD_CD_RSS_DESCRIPTION'] = "Выводит элементы в формате RSS";
+$MESS ['DEV2FUN_CD_RSS'] = "RSS";
 ?>
