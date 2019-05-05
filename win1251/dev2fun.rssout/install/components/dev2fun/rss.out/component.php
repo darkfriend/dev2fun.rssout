@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author darkfriend <hi@darkfriend.ru>
+ * @copyright dev2fun
+ * @version 1.1.0
+ */
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var CBitrixComponent $this */
 /** @var array $arParams */
@@ -43,12 +48,9 @@ if(strlen($arParams["SORT_BY2"])<=0)
 if(!preg_match('/^(asc|desc|nulls)(,asc|,desc|,nulls){0,1}$/i', $arParams["SORT_ORDER2"]))
 	$arParams["SORT_ORDER2"]="ASC";
 
-if(strlen($arParams["FILTER_NAME"])<=0 || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"]))
-{
+if(strlen($arParams["FILTER_NAME"])<=0 || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"])) {
 	$arrFilter = array();
-}
-else
-{
+} else {
 	$arrFilter = $GLOBALS[$arParams["FILTER_NAME"]];
 	if(!is_array($arrFilter))
 		$arrFilter = array();
@@ -75,101 +77,101 @@ else
 
 if($this->StartResultCache(false, array($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups(), $arrFilter)))
 {
-	$rsResult = CIBlock::GetList(array(), array(
-		"ACTIVE" => "Y",
-		"SITE_ID" => SITE_ID,
-		"=ID" => $arParams["IBLOCK_ID"],
-	));
-	$arResult = $rsResult->Fetch();
-	if(!$arResult)
-	{
-		$this->AbortResultCache();
-		if($bDesignMode)
-		{
-			ob_end_flush();
-			ShowError(GetMessage("CT_RO_IBLOCK_NOT_FOUND"));
-			return;
-		}
-		else
-			die();
-	}
-	else
-	{
-		foreach($arResult as $k => $v)
-		{
-			if(substr($k, 0, 1)!=="~")
-			{
-				$arResult["~".$k] = $v;
-				$arResult[$k] = htmlspecialcharsbx($v);
-			}
-		}
-	}
-
-	$arResult["RSS_TTL"] = $arParams["RSS_TTL"];
-
-	if($arParams["SECTION_ID"] > 0 || strlen($arParams["SECTION_CODE"]) > 0)
-	{
-		$arFilter = array(
-			"ACTIVE" => "Y",
-			"GLOBAL_ACTIVE" => "Y",
-			"=IBLOCK_ID" => $arParams["IBLOCK_ID"],
-			"IBLOCK_ACTIVE" => "Y",
-		);
-		if(count($arParams["SECTION_ID"]) > 0)
-			$arFilter["=ID"] = $arParams["SECTION_ID"];
-		elseif(strlen($arParams["SECTION_CODE"]) > 0)
-			$arFilter["=CODE"] = $arParams["SECTION_CODE"];
-
-		$rsResult = CIBlockSection::GetList(array(), $arFilter);
-		while ($section = $rsResult->Fetch())
-			$arResult["SECTION"][] = $section;
-		if(!$arResult["SECTION"])
-		{
-			$this->AbortResultCache();
-			if($bDesignMode)
-			{
-				ob_end_flush();
-				ShowError(GetMessage("CT_RO_SECTION_NOT_FOUND"));
-				return;
-			}
-			else
-				die();
-		}
-//		else
+//	$rsResult = CIBlock::GetList(array(), array(
+//		"ACTIVE" => "Y",
+//		"SITE_ID" => SITE_ID,
+//		"=ID" => $arParams["IBLOCK_ID"],
+//	));
+//	$arResult = $rsResult->Fetch();
+//	if(!$arResult)
+//	{
+//		$this->AbortResultCache();
+//		if($bDesignMode)
 //		{
-//			foreach($arResult["SECTION"] as $k => $v)
+//			ob_end_flush();
+//			ShowError(GetMessage("CT_RO_IBLOCK_NOT_FOUND"));
+//			return;
+//		}
+//		else
+//			die();
+//	}
+//	else
+//	{
+//		foreach($arResult as $k => $v)
+//		{
+//			if(substr($k, 0, 1)!=="~")
 //			{
-//				if(substr($k, 0, 1)!=="~")
-//				{
-//					$arResult["SECTION"]["~".$k] = $v;
-//					$arResult["SECTION"][$k] = htmlspecialcharsbx($v);
-//				}
+//				$arResult["~".$k] = $v;
+//				$arResult[$k] = htmlspecialcharsbx($v);
 //			}
 //		}
-	}
+//	}
+//	\Helper\DevHelpers::print_pre($arParams["IBLOCK_ID"],true);
 
-	if(strlen($arResult["SERVER_NAME"])<=0 && defined("SITE_SERVER_NAME"))
-	{
+	$arResult = array();
+	$arResult["RSS_TTL"] = $arParams["RSS_TTL"];
+
+//	if($arParams["SECTION_ID"] > 0 || strlen($arParams["SECTION_CODE"]) > 0)
+//	{
+//		$arFilter = array(
+//			"ACTIVE" => "Y",
+//			"GLOBAL_ACTIVE" => "Y",
+//			"=IBLOCK_ID" => $arParams["IBLOCK_ID"],
+//			"IBLOCK_ACTIVE" => "Y",
+//		);
+//		if(count($arParams["SECTION_ID"]) > 0)
+//			$arFilter["=ID"] = $arParams["SECTION_ID"];
+//		elseif(strlen($arParams["SECTION_CODE"]) > 0)
+//			$arFilter["=CODE"] = $arParams["SECTION_CODE"];
+//
+//		$rsResult = CIBlockSection::GetList(array(), $arFilter);
+//		while ($section = $rsResult->Fetch())
+//			$arResult["SECTION"][] = $section;
+//		if(!$arResult["SECTION"])
+//		{
+//			$this->AbortResultCache();
+//			if($bDesignMode)
+//			{
+//				ob_end_flush();
+//				ShowError(GetMessage("CT_RO_SECTION_NOT_FOUND"));
+//				return;
+//			}
+//			else
+//				die();
+//		}
+////		else
+////		{
+////			foreach($arResult["SECTION"] as $k => $v)
+////			{
+////				if(substr($k, 0, 1)!=="~")
+////				{
+////					$arResult["SECTION"]["~".$k] = $v;
+////					$arResult["SECTION"][$k] = htmlspecialcharsbx($v);
+////				}
+////			}
+////		}
+//	}
+
+	if(defined("SITE_SERVER_NAME"))
 		$arResult["SERVER_NAME"] = SITE_SERVER_NAME;
-	}
-	if(strlen($arResult["SERVER_NAME"])<=0 && defined("SITE_SERVER_NAME"))
-	{
+
+	if(strlen($arResult["SERVER_NAME"])<=0 && defined("SITE_SERVER_NAME")) {
 		$b = "sort";
 		$o = "asc";
-		$rsSite = CSite::GetList($b, $o, array("LID" => $arResult["LID"]));
+		$rsSite = CSite::GetList($b, $o, array("LID" => SITE_ID));
 		if($arSite = $rsSite->Fetch())
 			$arResult["SERVER_NAME"] = $arSite["SERVER_NAME"];
 	}
-	if(strlen($arResult["SERVER_NAME"])<=0)
-	{
-		$arResult["SERVER_NAME"] = COption::GetOptionString("main", "server_name", "www.bitrixsoft.com");
+	if(strlen($arResult["SERVER_NAME"])<=0) {
+		$arResult["SERVER_NAME"] = COption::GetOptionString("main", "server_name", "dev2fun.com");
 	}
 
-	$arResult["PICTURE"] = CFile::GetFileArray($arResult["PICTURE"]);
+//	$arResult["PICTURE"] = CFile::GetFileArray($arResult["PICTURE"]);
 
-	$arResult["NODES"] = CIBlockRSS::GetNodeList($arResult["ID"]);
+//	$arResult["NODES"] = CIBlockRSS::GetNodeList($arResult["ID"]);
+//	\Helper\DevHelpers::print_pre($arResult["NODES"],true);
 
-	$arSelect = array(
+	$arSelect = array (
 		"ID",
 		"CODE",
 		"XML_ID",
@@ -207,17 +209,7 @@ if($this->StartResultCache(false, array($arParams["CACHE_GROUPS"]==="N"? false: 
 	if($arParams["CHECK_DATES"])
 		$arFilter["ACTIVE_DATE"] = "Y";
 
-	if(array_key_exists("SECTION", $arResult)) {
-//		\Helper\DevHelpers::print_pre($arResult["SECTION"],true);
-		foreach ($arResult["SECTION"] as $section) {
-			$arFilter["=SECTION_ID"][] = $section['ID'];
-		}
-//		$arFilter["SECTION_ID"] = $arResult["SECTION"]["ID"];
-		if($arParams["INCLUDE_SUBSECTIONS"])
-			$arFilter["INCLUDE_SUBSECTIONS"] = "Y";
-	} else {
-		$arFilter["=IBLOCK_ID"] = $arResult["ID"];
-	}
+	$arFilter["=IBLOCK_ID"] = $arParams["IBLOCK_ID"];
 
 	if($arParams["NUM_DAYS"] > 0)
 		$arFilter["ACTIVE_FROM"] = date($DB->DateFormatToPHP(CLang::GetDateFormat("FULL")), mktime(date("H"), date("i"), date("s"), date("m"), date("d")-IntVal($arParams["NUM_DAYS"]), date("Y")));
@@ -250,16 +242,6 @@ if($this->StartResultCache(false, array($arParams["CACHE_GROUPS"]==="N"? false: 
 		$arElement = $obElement->GetFields();
 		$arProperties = $obElement->GetProperties();
 
-		$arNodesElement = array();
-		foreach($arElement as $code => $value)
-			$arNodesElement["#".$code."#"] = $value;
-		$arNodesElement["#PREVIEW_TEXT#"] = htmlspecialcharsbx($arNodesElement["#PREVIEW_TEXT#"]);
-		$arNodesElement["#DETAIL_TEXT#"] = htmlspecialcharsbx($arNodesElement["#DETAIL_TEXT#"]);
-		foreach($arProperties as $code=>$arProperty)
-			$arNodesElement["#".$code."#"] = $arProperty["VALUE"];
-		$arNodesSearch = array_keys($arNodesElement);
-		$arNodesReplace = array_values($arNodesElement);
-
 		$arElement["arr_PREVIEW_PICTURE"] = $arElement["PREVIEW_PICTURE"] = CFile::GetFileArray($arElement["PREVIEW_PICTURE"]);
 		if(is_array($arElement["arr_PREVIEW_PICTURE"]))
 			$arElement["PREVIEW_PICTURE"] = CHTTP::URN2URI($arElement["arr_PREVIEW_PICTURE"]["SRC"], $arResult["SERVER_NAME"]);
@@ -267,80 +249,47 @@ if($this->StartResultCache(false, array($arParams["CACHE_GROUPS"]==="N"? false: 
 		if(is_array($arElement["arr_DETAIL_PICTURE"]))
 			$arElement["DETAIL_PICTURE"] = CHTTP::URN2URI($arElement["arr_DETAIL_PICTURE"]["SRC"], $arResult["SERVER_NAME"]);
 
-		if(strlen($arResult["NODES"]["title"])>0)
-			$arItem["title"] = str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["title"]);
-		else
-			$arItem["title"] = $arElement["NAME"];
+		$arItem["title"] = $arElement["NAME"];
 		$arItem["title"] = htmlspecialcharsbx(htmlspecialcharsback($arItem["title"]));
 
-		if(strlen($arResult["NODES"]["link"])>0)
-			$arItem["link"] = str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["link"]);
-		elseif($arProperties["DOC_LINK"]["VALUE"])
+		if($arProperties["DOC_LINK"]["VALUE"])
 			$arItem["link"] = CHTTP::URN2URI($arProperties["DOC_LINK"]["VALUE"], $arResult["SERVER_NAME"]);
 		else
 			$arItem["link"] = CHTTP::URN2URI($arElement["DETAIL_PAGE_URL"], $arResult["SERVER_NAME"]);
 
-		if(strlen($arResult["NODES"]["description"])>0)
-			$arItem["description"] = str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["description"]);
-		else
-			$arItem["description"]=htmlspecialcharsbx(($arElement["PREVIEW_TEXT"] || $arParams["YANDEX"]) ? $arElement["PREVIEW_TEXT"] : $arElement["DETAIL_TEXT"]);
+		$arItem["description"] = htmlspecialcharsbx(
+			($arElement["PREVIEW_TEXT"] || $arParams["YANDEX"])
+				? $arElement["PREVIEW_TEXT"]
+				: $arElement["DETAIL_TEXT"]
+		);
 
-		if(strlen($arResult["NODES"]["enclosure"])>0)
-		{
-			$arItem["enclosure"] = array(
-				"url" => str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["enclosure"]),
-				"length" => str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["enclosure_length"]),
-				"type" => str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["enclosure_type"]),
-			);
-		}
-		elseif(is_array($arElement["arr_PREVIEW_PICTURE"]))
-		{
+		if(is_array($arElement["arr_PREVIEW_PICTURE"])) {
 			$arItem["enclosure"] = array(
 				"url" => CHTTP::URN2URI($arElement["arr_PREVIEW_PICTURE"]["SRC"], $arResult["SERVER_NAME"]),
 				"length" => $arElement["arr_PREVIEW_PICTURE"]["FILE_SIZE"],
 				"type" => $arElement["arr_PREVIEW_PICTURE"]["CONTENT_TYPE"],
 			);
-		}
-		else
-		{
+		} else {
 			$arItem["enclosure"]=false;
 		}
 
-		if(strlen($arResult["NODES"]["category"])>0)
-		{
-			$arItem["category"] = str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["category"]);
-		}
-		else
-		{
-			$arItem["category"] = "";
-			$rsNavChain = CIBlockSection::GetNavChain($arResult["ID"], $arElement["IBLOCK_SECTION_ID"]);
-			while($arNavChain = $rsNavChain->Fetch())
-			{
-				if ($arItem["category"])
-					$arItem["category"] .= "/";
-				$arItem["category"] .= htmlspecialcharsbx($arNavChain["NAME"]);
-			}
+		$arItem["category"] = "";
+		$rsNavChain = CIBlockSection::GetNavChain($arResult["ID"], $arElement["IBLOCK_SECTION_ID"]);
+		while($arNavChain = $rsNavChain->Fetch()) {
+			if ($arItem["category"])
+				$arItem["category"] .= "/";
+			$arItem["category"] .= htmlspecialcharsbx($arNavChain["NAME"]);
 		}
 
-		if($arParams["YANDEX"])
-		{
+		if($arParams["YANDEX"]) {
 			$arItem["full-text"] = htmlspecialcharsbx(htmlspecialcharsback($arElement["DETAIL_TEXT"]));
 		}
 
-		if(strlen($arResult["NODES"]["pubDate"])>0)
-		{
-			$arItem["pubDate"] = str_replace($arNodesSearch, $arNodesReplace, $arResult["NODES"]["pubDate"]);
-		}
-		elseif(strlen($arElement["ACTIVE_FROM"])>0)
-		{
+		if(strlen($arElement["ACTIVE_FROM"])>0) {
 			$arItem["pubDate"] = date("r", MkDateTime($DB->FormatDate($arElement["ACTIVE_FROM"], Clang::GetDateFormat("FULL"), "DD.MM.YYYY H:I:S"), "d.m.Y H:i:s"));
-		}
-		elseif(strlen($arElement["DATE_CREATE"])>0)
-		{
+		} elseif(strlen($arElement["DATE_CREATE"])>0) {
 			$arItem["pubDate"] = date("r", MkDateTime($DB->FormatDate($arElement["DATE_CREATE"], Clang::GetDateFormat("FULL"), "DD.MM.YYYY H:I:S"), "d.m.Y H:i:s"));
-		}
-		else
-		{
+		} else {
 			$arItem["pubDate"] = date("r");
 		}
 
@@ -355,14 +304,11 @@ if($this->StartResultCache(false, array($arParams["CACHE_GROUPS"]==="N"? false: 
 	$this->IncludeComponentTemplate();
 }
 
-if(!$bDesignMode)
-{
+if(!$bDesignMode) {
 	$r = $APPLICATION->EndBufferContentMan();
 	echo $r;
 	die();
-}
-else
-{
+} else {
 	$contents = ob_get_contents();
 	ob_end_clean();
 	echo "<pre>",htmlspecialcharsbx($contents),"</pre>";
