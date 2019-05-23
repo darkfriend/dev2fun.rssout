@@ -1,8 +1,7 @@
 <?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
-if(!CModule::IncludeModule("iblock"))
-	return;
+if(!CModule::IncludeModule("iblock")) return;
 
 $arIBlockType = CIBlockParameters::GetIBlockTypes();
 
@@ -81,6 +80,12 @@ $arComponentParameters = array(
 		"SECTION_CODE" => array(
 			"PARENT" => "BASE",
 			"NAME" => GetMessage("CP_BRO_SECTION_CODE"),
+			"TYPE" => "STRING",
+			"DEFAULT" => "",
+		),
+		"EVENT_KEY" => array(
+			"PARENT" => "BASE",
+			"NAME" => GetMessage("DEV2FUN_RSS_PROP_EVENT_KEY"),
 			"TYPE" => "STRING",
 			"DEFAULT" => "",
 		),

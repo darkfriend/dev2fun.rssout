@@ -23,4 +23,4 @@ $MESS["CP_BRO_SECTION_CODE"] = "Код раздела";
 $MESS["CP_BRO_CACHE_GROUPS"] = "Учитывать права доступа";
 $MESS["CP_BRO_FILTER_NAME"] = "Фильтр";
 $MESS["CP_BRO_CACHE_FILTER"] = "Кешировать при установленном фильтре";
-?>
+$MESS["DEV2FUN_RSS_PROP_EVENT_KEY"] = "Уникальный ключ для события";

@@ -23,4 +23,4 @@ $MESS["CP_BRO_SECTION_CODE"] = "Section code";
 $MESS["CP_BRO_CACHE_GROUPS"] = "Respect Access Permissions";
 $MESS["CP_BRO_FILTER_NAME"] = "Filter";
 $MESS["CP_BRO_CACHE_FILTER"] = "Cache if the filter is active";
-?>
+$MESS["DEV2FUN_RSS_PROP_EVENT_KEY"] = "Event unique key";

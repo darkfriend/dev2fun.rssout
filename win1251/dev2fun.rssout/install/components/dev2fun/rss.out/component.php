@@ -299,7 +299,7 @@ if($this->StartResultCache(false, array($arParams["CACHE_GROUPS"]==="N"? false: 
 	}
 
 	foreach (GetModuleEvents('dev2fun.rssout', "OnBeforeOutputRss", true) as $arEvent)
-		ExecuteModuleEventEx($arEvent, array(&$arResult));
+		ExecuteModuleEventEx($arEvent, array(&$arResult, $arParams));
 
 	$this->IncludeComponentTemplate();
 }
