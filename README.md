@@ -44,6 +44,7 @@ _вызывается перед выводом RSS-ленты._
 
 **Параметры:**
 * &$arResult - массив результата в котором есть ITEMS.
+* $arParams - массив параметров
 
 ### Пример использования событий
 
@@ -51,11 +52,15 @@ _вызывается перед выводом RSS-ленты._
 \Bitrix\Main\EventManager::getInstance()->addEventHandler(
   'dev2fun.rssout',
   'OnBeforeOutputRss',
-  function(&$arResult) {
+  function(&$arResult, $arParams) {
     $arResult['NAME'] = 'Название для RSS';
     if(empty($arResult['ITEMS'])) return;
+    // $arParams['EVENT_KEY'] - используйте для идентификации ленты
+    if($arParams['EVENT_KEY']=='main') {
+      // ваш код для ленты "main"
+    }
     foreach ($arResult['ITEMS'] as &$arItem) {
-      // ваш код
+      // ваш код для работы с элементами ленты
     }
     unset($arItem);
   }
